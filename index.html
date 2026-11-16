@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jesper Chat</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#3730a3">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b2140;--mut:#6b7194;--brand:#4338ca;--bg:#eceffa;--card:#fff;--line:#dfe3f3}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
+.hide{display:none!important}
+.full{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:32px;text-align:center}
+.logo{width:84px;height:84px;border-radius:26px;background:linear-gradient(145deg,#4338ca,#7c3aed);display:grid;place-items:center;color:#fff;font-weight:800;font-size:38px;box-shadow:0 14px 34px #4338ca55}
+.full h1{font-size:30px;font-weight:800}.full p{color:var(--mut);max-width:300px;line-height:1.5}
+.btn{background:var(--brand);color:#fff;padding:14px 24px;border-radius:16px;font-weight:600}
+.btn.g{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.r{background:#e11d48}
+#banned h1{color:#e11d48}
+#app{position:fixed;inset:0;display:flex}
+#main{flex:1;display:flex;flex-direction:column;min-width:0;padding-top:env(safe-area-inset-top)}
+header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--brand);color:#fff}
+header .logo{width:38px;height:38px;border-radius:12px;font-size:18px;box-shadow:none;background:#ffffff26}
+header b{flex:1;font-size:18px}
+header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#ffffff1f;font-size:17px}
+#msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;background:radial-gradient(#d9ddf2 1px,transparent 1px) 0 0/22px 22px,var(--bg)}
+.day{align-self:center;background:#fff;color:var(--mut);font-size:12px;padding:4px 12px;border-radius:10px;margin:8px 0}
+.row{display:flex;gap:8px;align-items:flex-end;max-width:86%}
+.row.me{align-self:flex-end;flex-direction:row-reverse}
+.bub{background:var(--card);padding:8px 11px 5px;border-radius:16px 16px 16px 4px;box-shadow:0 1px 2px #1b214014;min-width:64px;position:relative}
+.me .bub{background:var(--brand);color:#fff;border-radius:16px 16px 4px 16px}
+.nm{font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:2px}
+.txt{white-space:pre-wrap;word-break:break-word;line-height:1.4}
+.bub img.ph{display:block;max-width:100%;width:240px;border-radius:10px;margin:2px 0}
+.bub audio{width:210px;height:36px;display:block}
+.tm{font-size:11px;opacity:.6;text-align:right;margin-top:2px}
+.del{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#e11d48;color:#fff;font-size:12px}
+.av{width:34px;height:34px;border-radius:50%;background:#c7d2fe center/cover;color:var(--brand);display:grid;place-items:center;font-weight:700;flex:none}
+#bar{display:flex;gap:8px;align-items:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+#bar input[type=text]{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:22px;padding:12px 16px;font:inherit;outline:none;min-width:0}
+#bar input:focus-visible{border-color:var(--brand)}
+.ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:19px;flex:none;color:var(--mut)}
+.ib.pri{background:var(--brand);color:#fff}
+.ib.rec{background:#e11d48;color:#fff;animation:pl 1s infinite}
+@keyframes pl{50%{opacity:.55}}
+#side{width:min(320px,86vw);background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;position:fixed;right:0;top:0;bottom:0;transform:translateX(100%);transition:transform .25s;z-index:5;padding-top:env(safe-area-inset-top)}
+#side.open{transform:none;box-shadow:-10px 0 30px #1b214033}
+#side h3{padding:16px;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+#mem{overflow-y:auto;flex:1}
+.mi{display:flex;align-items:center;gap:12px;padding:10px 16px}
+.mi span{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mi button{width:36px;height:36px;border-radius:50%;background:var(--bg)}
+.mi .bn{background:#ffe4e6}
+@media(min-width:900px){#side{position:static;transform:none;box-shadow:none}#sideX,#memBtn{display:none}}
+.modal{position:fixed;inset:0;background:#1b214099;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:22px;display:flex;flex-direction:column;gap:12px;max-height:90%;overflow-y:auto}
+.sheet h2{font-size:18px}
+.sheet input{border:1px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit}
+.big{width:88px;height:88px;font-size:34px;align-self:center}
+#call{z-index:20;background:linear-gradient(160deg,#312e81,#6d28d9);color:#fff}
+#call .av{width:96px;height:96px;font-size:38px}
+.cr{display:flex;gap:18px}
+.cr .btn{border-radius:50%;width:64px;height:64px;padding:0;font-size:24px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1b2140;color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px}
+</style></head><body>
+
+<div id="login" class="full hide"><div class="logo">J</div><h1>Jesper Chat</h1><p>Google hesabınla katıl, herkesle aynı sohbette yazış.</p><button class="btn" id="gBtn">Google ile devam et</button></div>
+
+<div id="banned" class="full hide"><div class="logo" style="background:#e11d48;box-shadow:none">!</div><h1>Engellendin</h1><p>Bu hesap yönetici tarafından engellendi. Sohbete erişemezsin.</p><button class="btn g" onclick="auth.signOut()">Çıkış yap</button></div>
+
+<div id="app" class="hide">
+ <div id="main">
+  <header><div class="logo">J</div><b>Jesper Chat</b><button id="memBtn" title="Üyeler">👥</button><button id="meBtn" title="Profil">⚙</button></header>
+  <div id="msgs"></div>
+  <div id="bar">
+   <label class="ib" title="Fotoğraf">📷<input id="file" type="file" accept="image/*" hidden></label>
+   <input id="inp" type="text" placeholder="Mesaj yaz" autocomplete="off">
+   <button class="ib" id="mic" title="Ses kaydı">🎤</button>
+   <button class="ib pri hide" id="snd" title="Gönder">➤</button>
+  </div>
+ </div>
+ <aside id="side"><h3>Üyeler <span id="cnt"></span><button id="sideX" class="ib" style="width:32px;height:32px">✕</button></h3><div id="mem"></div></aside>
+</div>
+
+<div id="prof" class="modal hide"><div class="sheet" id="sheet"></div></div>
+
+<div id="call" class="full hide"><div class="av" id="cav"></div><h1 id="cname"></h1><p id="cst"></p>
+ <div class="cr"><button class="btn" id="acc">📞</button><button class="btn r" id="rej">✕</button></div></div>
+<audio id="rem" autoplay></audio>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// ====== AYARLAR: Firebase konsolundan kopyala ======
+const CFG={apiKey:"AIzaSyAfBrvaYz9xCxo5pPo5drALQeii4TZrYwg",authDomain:"jesper-chat-2.firebaseapp.com",projectId:"jesper-chat-2",appId:"1:516303452280:web:45497f89f199f1489d558d"};
+const ADMIN_PASS="ahmet460146"; // yönetici şifresi (aşağıdaki nota bak)
+// ===================================================
+firebase.initializeApp(CFG);
+const auth=firebase.auth(),db=firebase.firestore(),TS=firebase.firestore.FieldValue.serverTimestamp;
+const $=s=>document.querySelector(s);
+let me,mine={},users={},started=false,admin=sessionStorage.jadm=='1';
+function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+const hm=d=>d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+const dayL=d=>{const n=new Date(),y=new Date(Date.now()-864e5);return d.toDateString()==n.toDateString()?'Bugün':d.toDateString()==y.toDateString()?'Dün':d.toLocaleDateString('tr-TR')};
+const toast=t=>{const e=h('div','',t);e.id='toast';document.body.append(e);setTimeout(()=>e.remove(),2600)};
+function show(id){['login','banned','app'].forEach(x=>$('#'+x).classList.toggle('hide',x!=id))}
+function shrink(f,max,q){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',q))};i.src=URL.createObjectURL(f)})}
+function av(u,big){const a=h('div','av'+(big?' big':''));if(u&&u.photo)a.style.backgroundImage='url("'+u.photo+'")';else a.textContent=((u&&u.name)||'?')[0].toUpperCase();return a}
+
+$('#gBtn').onclick=()=>auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>toast('Giriş yapılamadı: '+e.code));
+auth.onAuthStateChanged(async u=>{
+ if(!u){show('login');return}
+ me=u;const ref=db.collection('users').doc(u.uid);
+ if(!(await ref.get()).exists)await ref.set({name:u.displayName||'Kullanıcı',photo:u.photoURL||'',email:u.email,banned:false,joined:TS()});
+ ref.onSnapshot(d=>{mine=d.data()||{};if(mine.banned){show('banned');return}show('app');if(!started){started=true;start()}});
+});
+
+function start(){
+ db.collection('users').onSnapshot(s=>{users={};s.forEach(d=>users[d.id]=d.data());members();msgsRender()},()=>{});
+ db.collection('messages').orderBy('ts','desc').limit(150).onSnapshot(s=>{list=s.docs.map(d=>({id:d.id,...d.data()})).reverse();msgsRender(true)},()=>{});
+ db.collection('calls').where('to','==',me.uid).where('status','==','ring').onSnapshot(s=>s.docChanges().forEach(x=>{if(x.type=='added'&&!pc){inc={id:x.doc.id,...x.doc.data()};ringUI()}}),()=>{});
+}
+let list=[];
+function members(){
+ const m=$('#mem');m.replaceChildren();let n=0;
+ Object.entries(users).filter(([,u])=>!u.banned).forEach(([id,u])=>{n++;
+  const r=h('div','mi');r.append(av(u),h('span','',u.name+(id==me.uid?' (sen)':'')));
+  if(id!=me.uid){const c=h('button','','📞');c.onclick=()=>call(id);r.append(c);
+   if(admin){const b=h('button','bn','🚫');b.onclick=()=>confirm(u.name+' engellensin mi?')&&db.collection('users').doc(id).update({banned:true});r.append(b)}}
+  m.append(r)});
+ $('#cnt').textContent=n;
+}
+function msgsRender(scroll){
+ const box=$('#msgs'),near=box.scrollHeight-box.scrollTop-box.clientHeight<140;box.replaceChildren();let last='';
+ list.forEach(m=>{const d=m.ts?m.ts.toDate():new Date(),dl=dayL(d);
+  if(dl!=last){box.append(h('div','day',dl));last=dl}
+  const u=users[m.uid]||{name:m.name},mineMsg=m.uid==me.uid,row=h('div','row'+(mineMsg?' me':''));
+  const b=h('div','bub');if(!mineMsg)b.append(h('div','nm',u.name||'Kullanıcı'));
+  if(m.type=='image'){const i=h('img','ph');i.src=m.data;b.append(i)}
+  else if(m.type=='audio'){const a=h('audio');a.controls=true;a.src=m.data;b.append(a)}
+  else b.append(h('div','txt',m.text));
+  b.append(h('div','tm',hm(d)));
+  if(admin){const x=h('button','del','✕');x.onclick=()=>confirm('Mesaj silinsin mi?')&&db.collection('messages').doc(m.id).delete();b.append(x)}
+  row.append(av(u),b);box.append(row)});
+ if(scroll&&near||box.dataset.f!='1'){box.scrollTop=box.scrollHeight;if(list.length)box.dataset.f='1'}
+}
+function send(o){if(mine.banned)return;db.collection('messages').add({uid:me.uid,name:mine.name,ts:TS(),...o}).catch(()=>toast('Mesaj gönderilemedi'))}
+const inp=$('#inp');
+inp.oninput=()=>{const t=inp.value.trim()!='';$('#snd').classList.toggle('hide',!t);$('#mic').classList.toggle('hide',t)};
+const go=()=>{const t=inp.value.trim();if(!t)return;send({type:'text',text:t});inp.value='';inp.oninput()};
+$('#snd').onclick=go;inp.onkeydown=e=>e.key=='Enter'&&go();
+$('#file').onchange=async e=>{const f=e.target.files[0];if(f)send({type:'image',data:await shrink(f,900,.7)});e.target.value=''};
+
+let rec,chunks,t0,tmo;
+$('#mic').onclick=async()=>{
+ if(rec&&rec.state=='recording'){rec.stop();return}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:true});
+  rec=new MediaRecorder(st,{audioBitsPerSecond:24000});chunks=[];
+  rec.ondataavailable=e=>chunks.push(e.data);
+  rec.onstop=()=>{st.getTracks().forEach(t=>t.stop());clearTimeout(tmo);$('#mic').classList.remove('rec');
+   if(Date.now()-t0<800)return;const f=new FileReader();
+   f.onload=()=>send({type:'audio',data:f.result});f.readAsDataURL(new Blob(chunks,{type:rec.mimeType}))};
+  rec.start();t0=Date.now();$('#mic').classList.add('rec');tmo=setTimeout(()=>rec.stop(),60000);toast('Kayıt başladı. Bitirmek için tekrar dokun')
+ }catch(e){toast('Mikrofon izni gerekli')}
+};
+
+// ---- Profil ve yönetici ----
+$('#meBtn').onclick=profile;$('#memBtn').onclick=()=>$('#side').classList.add('open');$('#sideX').onclick=()=>$('#side').classList.remove('open');
+function profile(){
+ const s=$('#sheet');s.replaceChildren();$('#prof').classList.remove('hide');
+ let photo=mine.photo;const a=av({name:mine.name,photo},true);
+ const pick=h('input');pick.type='file';pick.accept='image/*';pick.hidden=true;
+ pick.onchange=async e=>{if(e.target.files[0]){photo=await shrink(e.target.files[0],200,.8);a.style.backgroundImage='url("'+photo+'")';a.textContent=''}};
+ a.onclick=()=>pick.click();a.style.cursor='pointer';
+ const nm=h('input');nm.value=mine.name||'';nm.maxLength=24;nm.placeholder='Kullanıcı adı';
+ const sv=h('button','btn','Kaydet');sv.onclick=async()=>{if(!nm.value.trim())return toast('Kullanıcı adı boş olamaz');await db.collection('users').doc(me.uid).update({name:nm.value.trim(),photo:photo||''});$('#prof').classList.add('hide')};
+ const ad=h('button','btn g',admin?'Yönetici paneli':'Yönetici girişi');ad.onclick=admin?panel:adminLogin;
+ const lo=h('button','btn g','Çıkış yap');lo.onclick=()=>{$('#prof').classList.add('hide');auth.signOut().then(()=>location.reload())};
+ const cl=h('button','btn g','Kapat');cl.onclick=()=>$('#prof').classList.add('hide');
+ s.append(h('h2','','Hesabı düzenle'),a,pick,nm,sv,ad,lo,cl);
+}
+function adminLogin(){
+ const s=$('#sheet');s.replaceChildren();const p=h('input');p.type='password';p.placeholder='Yönetici şifresi';
+ const ok=h('button','btn','Giriş');ok.onclick=()=>{if(p.value==ADMIN_PASS){admin=true;sessionStorage.jadm='1';members();msgsRender();panel()}else toast('Şifre yanlış')};
+ const b=h('button','btn g','Geri');b.onclick=profile;s.append(h('h2','','Yönetici girişi'),p,ok,b);
+}
+function panel(){
+ const s=$('#sheet');s.replaceChildren();s.append(h('h2','','Engellenen kullanıcılar'));
+ const bl=Object.entries(users).filter(([,u])=>u.banned);
+ if(!bl.length)s.append(h('p','','Engelli kullanıcı yok. Üye listesindeki 🚫 ile engelleyebilirsin; mesajları silmek için baloncuktaki ✕ kullan.'));
+ bl.forEach(([id,u])=>{const r=h('div','mi');r.style.padding='4px 0';const b=h('button','btn g','Banı kaldır');b.onclick=()=>db.collection('users').doc(id).update({banned:false}).then(panel);r.append(av(u),h('span','',u.name),b);s.append(r)});
+ const x=h('button','btn g','Yönetici modundan çık');x.onclick=()=>{admin=false;sessionStorage.jadm='';members();msgsRender();profile()};
+ const c=h('button','btn g','Kapat');c.onclick=()=>$('#prof').classList.add('hide');s.append(x,c);
+}
+
+// ---- Sesli arama (WebRTC) ----
+let pc,stream,cref,inc,unsubs=[];
+async function mk(){stream=await navigator.mediaDevices.getUserMedia({audio:true});pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});stream.getTracks().forEach(t=>pc.addTrack(t,stream));pc.ontrack=e=>{$('#rem').srcObject=e.streams[0]}}
+function callUI(u,t,ring){$('#call').classList.remove('hide');$('#cav').replaceChildren();const a=av(u,true);$('#cav').style.cssText='background:none;width:auto;height:auto';$('#cav').append(a);$('#cname').textContent=u.name||'Kullanıcı';$('#cst').textContent=t;$('#acc').classList.toggle('hide',!ring)}
+function watch(side){
+ unsubs.push(cref.onSnapshot(async d=>{const c=d.data();if(!c)return;if(c.status=='ended')return end(true);
+  if(c.answer&&!pc.currentRemoteDescription){await pc.setRemoteDescription(c.answer);$('#cst').textContent='Görüşme sürüyor'}}));
+ unsubs.push(cref.collection(side).onSnapshot(s=>s.docChanges().forEach(x=>x.type=='added'&&pc.addIceCandidate(x.doc.data()).catch(()=>{}))));
+}
+async function call(uid){
+ if(pc)return;try{await mk()}catch(e){return toast('Mikrofon izni gerekli')}
+ cref=db.collection('calls').doc();pc.onicecandidate=e=>e.candidate&&cref.collection('a').add(e.candidate.toJSON());
+ const o=await pc.createOffer();await pc.setLocalDescription(o);
+ await cref.set({from:me.uid,to:uid,offer:{type:o.type,sdp:o.sdp},status:'ring'});
+ callUI(users[uid],'Aranıyor…',false);watch('b');$('#side').classList.remove('open');
+}
+function ringUI(){callUI({name:inc.from&&users[inc.from]?users[inc.from].name:'Arayan',photo:(users[inc.from]||{}).photo},'Sesli arama geliyor',true)}
+$('#acc').onclick=async()=>{
+ try{await mk()}catch(e){return toast('Mikrofon izni gerekli')}
+ cref=db.collection('calls').doc(inc.id);pc.onicecandidate=e=>e.candidate&&cref.collection('b').add(e.candidate.toJSON());
+ await pc.setRemoteDescription(inc.offer);const a=await pc.createAnswer();await pc.setLocalDescription(a);
+ await cref.update({answer:{type:a.type,sdp:a.sdp},status:'live'});watch('a');$('#acc').classList.add('hide');$('#cst').textContent='Görüşme sürüyor';
+};
+$('#rej').onclick=()=>end(false);
+function end(remote){
+ if(!remote&&(cref||inc))(cref||db.collection('calls').doc(inc.id)).update({status:'ended'}).catch(()=>{});
+ unsubs.forEach(u=>u());unsubs=[];if(pc)pc.close();if(stream)stream.getTracks().forEach(t=>t.stop());
+ pc=stream=cref=inc=null;$('#call').classList.add('hide');
+}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
