@@ -17,12 +17,22 @@ button{font:inherit;border:0;cursor:pointer;background:none;color:inherit}
 .btn.g{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .btn.r{background:#e11d48}
 #banned h1{color:#e11d48}
-#app{position:fixed;inset:0;display:flex}
-#main{flex:1;display:flex;flex-direction:column;min-width:0;padding-top:env(safe-area-inset-top)}
-header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--brand);color:#fff}
+#app{position:fixed;inset:0}
+.pane{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);background:var(--bg)}
+header{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--brand);color:#fff}
 header .logo{width:38px;height:38px;border-radius:12px;font-size:18px;box-shadow:none;background:#ffffff26}
-header b{flex:1;font-size:18px}
-header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#ffffff1f;font-size:17px}
+header b{flex:1;font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#ffffff1f;font-size:17px;flex:none}
+#sf{padding:12px 14px;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:8px}
+#q{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:22px;padding:12px 16px;font:inherit;outline:none}
+#q:focus-visible{border-color:var(--brand)}
+#sf button{background:var(--brand);color:#fff;border-radius:22px;padding:0 18px;font-weight:600}
+#list{flex:1;overflow-y:auto;background:#fff}
+.li{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.li:active{background:var(--bg)}
+.lb{flex:1;min-width:0}.lt{display:flex;justify-content:space-between;gap:8px}.lt small{color:var(--mut);font-size:12px}
+.ls{color:var(--mut);font-size:14px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hint{padding:18px;color:var(--mut);font-size:14px;line-height:1.5;text-align:center}
 #msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;background:radial-gradient(#d9ddf2 1px,transparent 1px) 0 0/22px 22px,var(--bg)}
 .day{align-self:center;background:#fff;color:var(--mut);font-size:12px;padding:4px 12px;border-radius:10px;margin:8px 0}
 .row{display:flex;gap:8px;align-items:flex-end;max-width:86%}
@@ -35,7 +45,9 @@ header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:
 .bub audio{width:210px;height:36px;display:block}
 .tm{font-size:11px;opacity:.6;text-align:right;margin-top:2px}
 .del{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:#e11d48;color:#fff;font-size:12px}
-.av{width:34px;height:34px;border-radius:50%;background:#c7d2fe center/cover;color:var(--brand);display:grid;place-items:center;font-weight:700;flex:none}
+.av{width:42px;height:42px;border-radius:50%;background:#c7d2fe center/cover;color:var(--brand);display:grid;place-items:center;font-weight:700;flex:none}
+.row .av{width:32px;height:32px}
+header .av{width:38px;height:38px}
 #bar{display:flex;gap:8px;align-items:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
 #bar input[type=text]{flex:1;border:1px solid var(--line);background:var(--bg);border-radius:22px;padding:12px 16px;font:inherit;outline:none;min-width:0}
 #bar input:focus-visible{border-color:var(--brand)}
@@ -51,26 +63,30 @@ header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:
 .mi span{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mi button{width:36px;height:36px;border-radius:50%;background:var(--bg)}
 .mi .bn{background:#ffe4e6}
-@media(min-width:900px){#side{position:static;transform:none;box-shadow:none}#sideX,#memBtn{display:none}}
 .modal{position:fixed;inset:0;background:#1b214099;display:flex;align-items:flex-end;justify-content:center;z-index:9}
 .sheet{background:#fff;width:100%;max-width:440px;border-radius:24px 24px 0 0;padding:22px;display:flex;flex-direction:column;gap:12px;max-height:90%;overflow-y:auto}
 .sheet h2{font-size:18px}
 .sheet input{border:1px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit}
-.big{width:88px;height:88px;font-size:34px;align-self:center}
+.sheet .av.big{width:88px;height:88px;font-size:34px;align-self:center}
 #call{z-index:20;background:linear-gradient(160deg,#312e81,#6d28d9);color:#fff}
 #call .av{width:96px;height:96px;font-size:38px}
 .cr{display:flex;gap:18px}
 .cr .btn{border-radius:50%;width:64px;height:64px;padding:0;font-size:24px}
-#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1b2140;color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1b2140;color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px;max-width:90%;text-align:center}
 </style></head><body>
 
-<div id="login" class="full hide"><div class="logo">J</div><h1>Jesper Chat</h1><p>Google hesabınla katıl, herkesle aynı sohbette yazış.</p><button class="btn" id="gBtn">Google ile devam et</button></div>
+<div id="login" class="full hide"><div class="logo">J</div><h1>Jesper Chat</h1><p>Google hesabınla katıl, arkadaşını Google adresiyle bul ve yazış.</p><button class="btn" id="gBtn">Google ile devam et</button></div>
 
 <div id="banned" class="full hide"><div class="logo" style="background:#e11d48;box-shadow:none">!</div><h1>Engellendin</h1><p>Bu hesap yönetici tarafından engellendi. Sohbete erişemezsin.</p><button class="btn g" onclick="auth.signOut()">Çıkış yap</button></div>
 
 <div id="app" class="hide">
- <div id="main">
-  <header><div class="logo">J</div><b>Jesper Chat</b><button id="memBtn" title="Üyeler">👥</button><button id="meBtn" title="Profil">⚙</button></header>
+ <div id="home" class="pane">
+  <header><div class="logo">J</div><b>Jesper Chat</b><button id="bell" title="Bildirimleri aç">🔔</button><button id="meBtn" title="Profil">⚙</button></header>
+  <form id="sf"><input id="q" type="email" placeholder="Google adresiyle kişi ara" autocomplete="off" autocapitalize="none"><button>Ara</button></form>
+  <div id="list"></div>
+ </div>
+ <div id="chat" class="pane hide">
+  <header><button id="bk" title="Geri">‹</button><span id="hav"></span><b id="hnm"></b><button id="callB" title="Sesli ara">📞</button><button id="memBtn" title="Üyeler">👥</button></header>
   <div id="msgs"></div>
   <div id="bar">
    <label class="ib" title="Fotoğraf">📷<input id="file" type="file" accept="image/*" hidden></label>
@@ -84,26 +100,28 @@ header button{width:40px;height:40px;border-radius:50%;display:grid;place-items:
 
 <div id="prof" class="modal hide"><div class="sheet" id="sheet"></div></div>
 
-<div id="call" class="full hide"><div class="av" id="cav"></div><h1 id="cname"></h1><p id="cst"></p>
+<div id="call" class="full hide"><div id="cav"></div><h1 id="cname"></h1><p id="cst"></p>
  <div class="cr"><button class="btn" id="acc">📞</button><button class="btn r" id="rej">✕</button></div></div>
 <audio id="rem" autoplay></audio>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script>
-// ====== AYARLAR: Firebase konsolundan kopyala ======
-const CFG={apiKey:"AIzaSyAfBrvaYz9xCxo5pPo5drALQeii4TZrYwg",authDomain:"jesper-chat-2.firebaseapp.com",projectId:"jesper-chat-2",appId:"1:516303452280:web:45497f89f199f1489d558d"};
-const ADMIN_PASS="ahmet460146"; // yönetici şifresi (aşağıdaki nota bak)
-// ===================================================
+const CFG={apiKey:"AIzaSyAfBrvaYz9xCxo5pPo5drALQeii4TZrYwg",authDomain:"jesper-chat-2.firebaseapp.com",projectId:"jesper-chat-2",messagingSenderId:"516303452280",appId:"1:516303452280:web:45497f89f199f1489d558d"};
+const VAPID="BIIECM5_gYZWrNTFAO5aa8NMcqQYs3yVI5k-T3WYnLyYl-lq5cW-GIK67EAVp_4wJJh1KrQqifOq91RrH3pX4qM"; // Firebase > Cloud Messaging > Web Push certificates
+const ADMIN_PASS="ahmet460146"; // kendi yönetici şifreni yaz
 firebase.initializeApp(CFG);
 const auth=firebase.auth(),db=firebase.firestore(),TS=firebase.firestore.FieldValue.serverTimestamp;
 const $=s=>document.querySelector(s);
-let me,mine={},users={},started=false,admin=sessionStorage.jadm=='1';
+let me,mine={},users={},chats=[],cur=null,unM=null,list=[],started=false,admin=sessionStorage.jadm=='1';
+const cid=(a,b)=>[a,b].sort().join('_');
+const col=id=>id=='genel'?db.collection('messages'):db.collection('chats').doc(id).collection('msgs');
 function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 const hm=d=>d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
 const dayL=d=>{const n=new Date(),y=new Date(Date.now()-864e5);return d.toDateString()==n.toDateString()?'Bugün':d.toDateString()==y.toDateString()?'Dün':d.toLocaleDateString('tr-TR')};
-const toast=t=>{const e=h('div','',t);e.id='toast';document.body.append(e);setTimeout(()=>e.remove(),2600)};
+const toast=t=>{const e=h('div','',t);e.id='toast';document.body.append(e);setTimeout(()=>e.remove(),2800)};
 function show(id){['login','banned','app'].forEach(x=>$('#'+x).classList.toggle('hide',x!=id))}
 function shrink(f,max,q){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',q))};i.src=URL.createObjectURL(f)})}
 function av(u,big){const a=h('div','av'+(big?' big':''));if(u&&u.photo)a.style.backgroundImage='url("'+u.photo+'")';else a.textContent=((u&&u.name)||'?')[0].toUpperCase();return a}
@@ -112,40 +130,68 @@ $('#gBtn').onclick=()=>auth.signInWithPopup(new firebase.auth.GoogleAuthProvider
 auth.onAuthStateChanged(async u=>{
  if(!u){show('login');return}
  me=u;const ref=db.collection('users').doc(u.uid);
- if(!(await ref.get()).exists)await ref.set({name:u.displayName||'Kullanıcı',photo:u.photoURL||'',email:u.email,banned:false,joined:TS()});
+ if(!(await ref.get()).exists)await ref.set({name:u.displayName||'Kullanıcı',photo:u.photoURL||'',banned:false,joined:TS()});
+ db.collection('emails').doc(u.email.toLowerCase()).set({uid:u.uid}).catch(()=>{});
  ref.onSnapshot(d=>{mine=d.data()||{};if(mine.banned){show('banned');return}show('app');if(!started){started=true;start()}});
 });
 
-function start(){
- db.collection('users').onSnapshot(s=>{users={};s.forEach(d=>users[d.id]=d.data());members();msgsRender()},()=>{});
- db.collection('messages').orderBy('ts','desc').limit(150).onSnapshot(s=>{list=s.docs.map(d=>({id:d.id,...d.data()})).reverse();msgsRender(true)},()=>{});
- db.collection('calls').where('to','==',me.uid).where('status','==','ring').onSnapshot(s=>s.docChanges().forEach(x=>{if(x.type=='added'&&!pc){inc={id:x.doc.id,...x.doc.data()};ringUI()}}),()=>{});
+function start(){enablePush(false);
+ db.collection('users').onSnapshot(s=>{users={};s.forEach(d=>users[d.id]=d.data());members();homeList();if(cur){head();msgsRender()}},()=>{});
+ db.collection('chats').where('members','array-contains',me.uid).onSnapshot(s=>{chats=s.docs.map(d=>({id:d.id,...d.data()}));homeList()},()=>{});
+ db.collection('calls').where('to','==',me.uid).where('status','==','ring').onSnapshot(s=>s.docChanges().forEach(x=>{const at=x.doc.data().at;if(x.type=='added'&&!pc&&(!at||Date.now()-at.toMillis()<60000)){inc={id:x.doc.id,...x.doc.data()};ringUI()}}),()=>{});
 }
-let list=[];
+function li(u,t,s,tm,fn){const r=h('div','li');r.onclick=fn;const b=h('div','lb'),t1=h('div','lt');t1.append(h('b','',t),h('small','',tm));b.append(t1,h('div','ls',s));r.append(av(u),b);return r}
+function homeList(){
+ const l=$('#list');l.replaceChildren();
+ l.append(li({name:'J'},'Genel sohbet','Herkesin yazabildiği grup','',()=>openChat('genel')));
+ chats.slice().sort((a,b)=>(b.lastTs?b.lastTs.seconds:0)-(a.lastTs?a.lastTs.seconds:0)).forEach(c=>{
+  const o=c.members.find(x=>x!=me.uid),u=users[o]||{name:'Kullanıcı'};
+  l.append(li(u,u.name,c.last||'Sohbeti başlat',c.lastTs?hm(c.lastTs.toDate()):'',()=>openChat(c.id,o)))});
+ if(!chats.length)l.append(h('div','hint','Birini bulmak için yukarıya Google adresini yaz. Kişi Jesper Chat’e kayıtlıysa özel sohbet açılır.'));
+}
+function head(){const g=cur.id=='genel',u=g?{name:'Genel sohbet'}:(users[cur.other]||{name:'Kullanıcı'});$('#hav').replaceChildren(av(u));$('#hnm').textContent=u.name;$('#callB').classList.toggle('hide',g);$('#memBtn').classList.toggle('hide',!g)}
+function openChat(id,o){
+ cur={id,other:o};if(unM)unM();list=[];const m=$('#msgs');m.replaceChildren();m.dataset.f='';head();
+ $('#home').classList.add('hide');$('#chat').classList.remove('hide');
+ unM=col(id).orderBy('ts','desc').limit(150).onSnapshot(s=>{list=s.docs.map(d=>({id:d.id,...d.data()})).reverse();msgsRender(true)},()=>toast('Mesajlar yüklenemedi'));
+}
+function back(){if(unM)unM();unM=null;cur=null;$('#chat').classList.add('hide');$('#home').classList.remove('hide');$('#side').classList.remove('open')}
+$('#bk').onclick=back;
+$('#sf').onsubmit=async e=>{e.preventDefault();const q=$('#q').value.trim().toLowerCase();if(!q)return;
+ if(q==me.email.toLowerCase())return toast('Bu senin kendi adresin');
+ try{const d=await db.collection('emails').doc(q).get(),o=d.exists&&d.data().uid;
+  if(!o||(users[o]&&users[o].banned))return toast('Bu adresle kayıtlı kullanıcı bulunamadı');
+  const id=cid(me.uid,o);await db.collection('chats').doc(id).set({members:id.split('_')},{merge:true});
+  $('#q').value='';openChat(id,o)}catch(x){toast('Arama başarısız')}};
+
 function members(){
  const m=$('#mem');m.replaceChildren();let n=0;
  Object.entries(users).filter(([,u])=>!u.banned).forEach(([id,u])=>{n++;
   const r=h('div','mi');r.append(av(u),h('span','',u.name+(id==me.uid?' (sen)':'')));
-  if(id!=me.uid){const c=h('button','','📞');c.onclick=()=>call(id);r.append(c);
+  if(id!=me.uid){const c=h('button','','💬');c.onclick=async()=>{const k=cid(me.uid,id);await db.collection('chats').doc(k).set({members:k.split('_')},{merge:true});$('#side').classList.remove('open');openChat(k,id)};r.append(c);
    if(admin){const b=h('button','bn','🚫');b.onclick=()=>confirm(u.name+' engellensin mi?')&&db.collection('users').doc(id).update({banned:true});r.append(b)}}
   m.append(r)});
  $('#cnt').textContent=n;
 }
 function msgsRender(scroll){
- const box=$('#msgs'),near=box.scrollHeight-box.scrollTop-box.clientHeight<140;box.replaceChildren();let last='';
+ if(!cur)return;const g=cur.id=='genel',box=$('#msgs'),near=box.scrollHeight-box.scrollTop-box.clientHeight<140;box.replaceChildren();let last='';
  list.forEach(m=>{const d=m.ts?m.ts.toDate():new Date(),dl=dayL(d);
   if(dl!=last){box.append(h('div','day',dl));last=dl}
-  const u=users[m.uid]||{name:m.name},mineMsg=m.uid==me.uid,row=h('div','row'+(mineMsg?' me':''));
-  const b=h('div','bub');if(!mineMsg)b.append(h('div','nm',u.name||'Kullanıcı'));
+  const u=users[m.uid]||{name:m.name},mm=m.uid==me.uid,row=h('div','row'+(mm?' me':''));
+  const b=h('div','bub');if(g&&!mm)b.append(h('div','nm',u.name||'Kullanıcı'));
   if(m.type=='image'){const i=h('img','ph');i.src=m.data;b.append(i)}
   else if(m.type=='audio'){const a=h('audio');a.controls=true;a.src=m.data;b.append(a)}
   else b.append(h('div','txt',m.text));
   b.append(h('div','tm',hm(d)));
-  if(admin){const x=h('button','del','✕');x.onclick=()=>confirm('Mesaj silinsin mi?')&&db.collection('messages').doc(m.id).delete();b.append(x)}
-  row.append(av(u),b);box.append(row)});
+  if(admin&&g){const x=h('button','del','✕');x.onclick=()=>confirm('Mesaj silinsin mi?')&&col('genel').doc(m.id).delete();b.append(x)}
+  if(g)row.append(av(u));row.append(b);box.append(row)});
  if(scroll&&near||box.dataset.f!='1'){box.scrollTop=box.scrollHeight;if(list.length)box.dataset.f='1'}
 }
-function send(o){if(mine.banned)return;db.collection('messages').add({uid:me.uid,name:mine.name,ts:TS(),...o}).catch(()=>toast('Mesaj gönderilemedi'))}
+function send(o){
+ if(mine.banned||!cur)return;
+ col(cur.id).add({uid:me.uid,name:mine.name,ts:TS(),...o}).catch(()=>toast('Mesaj gönderilemedi'));
+ if(cur.id!='genel')db.collection('chats').doc(cur.id).set({members:cur.id.split('_'),last:o.type=='text'?o.text.slice(0,60):o.type=='image'?'📷 Fotoğraf':'🎤 Ses kaydı',lastTs:TS()},{merge:true});
+}
 const inp=$('#inp');
 inp.oninput=()=>{const t=inp.value.trim()!='';$('#snd').classList.toggle('hide',!t);$('#mic').classList.toggle('hide',t)};
 const go=()=>{const t=inp.value.trim();if(!t)return;send({type:'text',text:t});inp.value='';inp.oninput()};
@@ -165,7 +211,6 @@ $('#mic').onclick=async()=>{
  }catch(e){toast('Mikrofon izni gerekli')}
 };
 
-// ---- Profil ve yönetici ----
 $('#meBtn').onclick=profile;$('#memBtn').onclick=()=>$('#side').classList.add('open');$('#sideX').onclick=()=>$('#side').classList.remove('open');
 function profile(){
  const s=$('#sheet');s.replaceChildren();$('#prof').classList.remove('hide');
@@ -188,16 +233,15 @@ function adminLogin(){
 function panel(){
  const s=$('#sheet');s.replaceChildren();s.append(h('h2','','Engellenen kullanıcılar'));
  const bl=Object.entries(users).filter(([,u])=>u.banned);
- if(!bl.length)s.append(h('p','','Engelli kullanıcı yok. Üye listesindeki 🚫 ile engelleyebilirsin; mesajları silmek için baloncuktaki ✕ kullan.'));
+ if(!bl.length)s.append(h('p','','Engelli kullanıcı yok. Genel sohbetin üye listesindeki 🚫 ile engelleyebilir, mesajları baloncuktaki ✕ ile silebilirsin.'));
  bl.forEach(([id,u])=>{const r=h('div','mi');r.style.padding='4px 0';const b=h('button','btn g','Banı kaldır');b.onclick=()=>db.collection('users').doc(id).update({banned:false}).then(panel);r.append(av(u),h('span','',u.name),b);s.append(r)});
  const x=h('button','btn g','Yönetici modundan çık');x.onclick=()=>{admin=false;sessionStorage.jadm='';members();msgsRender();profile()};
  const c=h('button','btn g','Kapat');c.onclick=()=>$('#prof').classList.add('hide');s.append(x,c);
 }
 
-// ---- Sesli arama (WebRTC) ----
 let pc,stream,cref,inc,unsubs=[];
 async function mk(){stream=await navigator.mediaDevices.getUserMedia({audio:true});pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});stream.getTracks().forEach(t=>pc.addTrack(t,stream));pc.ontrack=e=>{$('#rem').srcObject=e.streams[0]}}
-function callUI(u,t,ring){$('#call').classList.remove('hide');$('#cav').replaceChildren();const a=av(u,true);$('#cav').style.cssText='background:none;width:auto;height:auto';$('#cav').append(a);$('#cname').textContent=u.name||'Kullanıcı';$('#cst').textContent=t;$('#acc').classList.toggle('hide',!ring)}
+function callUI(u,t,ring){$('#call').classList.remove('hide');$('#cav').replaceChildren(av(u,true));$('#cname').textContent=u.name||'Kullanıcı';$('#cst').textContent=t;$('#acc').classList.toggle('hide',!ring)}
 function watch(side){
  unsubs.push(cref.onSnapshot(async d=>{const c=d.data();if(!c)return;if(c.status=='ended')return end(true);
   if(c.answer&&!pc.currentRemoteDescription){await pc.setRemoteDescription(c.answer);$('#cst').textContent='Görüşme sürüyor'}}));
@@ -207,10 +251,12 @@ async function call(uid){
  if(pc)return;try{await mk()}catch(e){return toast('Mikrofon izni gerekli')}
  cref=db.collection('calls').doc();pc.onicecandidate=e=>e.candidate&&cref.collection('a').add(e.candidate.toJSON());
  const o=await pc.createOffer();await pc.setLocalDescription(o);
- await cref.set({from:me.uid,to:uid,offer:{type:o.type,sdp:o.sdp},status:'ring'});
- callUI(users[uid],'Aranıyor…',false);watch('b');$('#side').classList.remove('open');
+ await cref.set({from:me.uid,to:uid,offer:{type:o.type,sdp:o.sdp},status:'ring',at:TS()});
+ const r0=cref;setTimeout(()=>{if(cref===r0&&pc&&!pc.currentRemoteDescription){end(false);toast('Cevap verilmedi')}},45000);
+ callUI(users[uid]||{},'Aranıyor…',false);watch('b');$('#side').classList.remove('open');
 }
-function ringUI(){callUI({name:inc.from&&users[inc.from]?users[inc.from].name:'Arayan',photo:(users[inc.from]||{}).photo},'Sesli arama geliyor',true)}
+$('#callB').onclick=()=>cur&&cur.other&&call(cur.other);
+function ringUI(){const u=users[inc.from]||{name:'Arayan'};callUI(u,'Sesli arama geliyor',true)}
 $('#acc').onclick=async()=>{
  try{await mk()}catch(e){return toast('Mikrofon izni gerekli')}
  cref=db.collection('calls').doc(inc.id);pc.onicecandidate=e=>e.candidate&&cref.collection('b').add(e.candidate.toJSON());
@@ -223,5 +269,18 @@ function end(remote){
  unsubs.forEach(u=>u());unsubs=[];if(pc)pc.close();if(stream)stream.getTracks().forEach(t=>t.stop());
  pc=stream=cref=inc=null;$('#call').classList.add('hide');
 }
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+let msg;
+async function enablePush(ask){
+ try{
+  if(!('Notification'in window)||!firebase.messaging.isSupported())return ask&&toast('Bu cihaz bildirimleri desteklemiyor');
+  if(VAPID=='BURAYA')return ask&&toast('VAPID anahtarı girilmemiş');
+  if(Notification.permission=='default'&&ask)await Notification.requestPermission();
+  if(Notification.permission!='granted')return ask&&toast('Bildirim izni verilmedi');
+  const reg=await navigator.serviceWorker.register('firebase-messaging-sw.js');
+  msg=msg||firebase.messaging();
+  const t=await msg.getToken({vapidKey:VAPID,serviceWorkerRegistration:reg});
+  if(t){await db.collection('tokens').doc(me.uid).set({t:firebase.firestore.FieldValue.arrayUnion(t)},{merge:true});if(ask)toast('Bildirimler açık')}
+ }catch(e){ask&&toast('Bildirim açılamadı')}
+}
+$('#bell').onclick=()=>enablePush(true);
 </script></body></html>
